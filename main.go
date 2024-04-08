@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"podval-bans/code/stucts/server"
+	"strings"
 
 	"github.com/LittleDrongo/fmn-lib/errors"
 	"github.com/LittleDrongo/fmn-lib/utils/files"
@@ -32,15 +33,14 @@ func main() {
 	//создаю общий банлист
 	combinedBans := MergeBans(configOne.Bans, configTwo.Bans)
 	fmt.Println("Объединенный список забаненных игроков:")
-	PrintJson(combinedBans)
 
 	//Заливаю общий бан лист в конфиги
 	configOne.Bans = combinedBans
 	configTwo.Bans = combinedBans
 
 	//Сохраняю конфиг в файл json файл
-	WriteJson(configOne, "data/output/1.json")
-	WriteJson(configTwo, "data/output/2.json")
+	WriteJsonWithFormatHMTL(configOne, "data/output/1.json")
+	WriteJsonWithFormatHMTL(configTwo, "data/output/2.json")
 
 }
 
@@ -63,6 +63,21 @@ func WriteJson(data interface{}, filepath string) {
 	errors.Println(err, "Ошибка при создании объекта данных JSON")
 
 	err = os.WriteFile(filepath, file, 0644)
+	errors.Println(err, "Ошибка сохранения файла JSON")
+}
+
+func WriteJsonWithFormatHMTL(data interface{}, filepath string) {
+	files.MakeDirIfIsNotExist(filepath)
+
+	jsonData, err := json.MarshalIndent(data, "", "    ")
+	errors.Println(err, "Ошибка при создании объекта данных JSON")
+
+	// Заменяю символы "<" и ">" на их HTML-эквиваленты
+	jsonString := string(jsonData)
+	jsonString = strings.Replace(jsonString, "\\u003c", "<", -1)
+	jsonString = strings.Replace(jsonString, "\\u003e", ">", -1)
+
+	err = os.WriteFile(filepath, []byte(jsonString), 0644)
 	errors.Println(err, "Ошибка сохранения файла JSON")
 }
 
