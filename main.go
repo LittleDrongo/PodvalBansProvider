@@ -7,6 +7,7 @@ import (
 	"podval-bans/code/stucts/server"
 	"strings"
 
+	"github.com/LittleDrongo/fmn-lib/console/color"
 	"github.com/LittleDrongo/fmn-lib/errors"
 	"github.com/LittleDrongo/fmn-lib/utils/files"
 	// fmn-lib/utils/json/
@@ -32,8 +33,11 @@ func main() {
 
 	//создаю общий банлист
 	combinedBans := MergeBans(configOne.Bans, configTwo.Bans)
-	fmt.Println("Объединенный список забаненных игроков:")
 
+	fmt.Println(color.BG_GREEN, "Объединенный список забаненных игроков:", color.BG_RESET)
+	fmt.Println(color.GREEN)
+	PrintJson(combinedBans)
+	fmt.Println(color.RESET)
 	//Заливаю общий бан лист в конфиги
 	configOne.Bans = combinedBans
 	configTwo.Bans = combinedBans
