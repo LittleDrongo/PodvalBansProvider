@@ -41,6 +41,7 @@ func main() {
 	//Сохраняю конфиг в файл json файл
 	WriteJsonWithFormatHMTL(configOne, "data/output/1.json")
 	WriteJsonWithFormatHMTL(configTwo, "data/output/2.json")
+	WriteJsonWithFormatHMTL(combinedBans, "data/output/banlist.json")
 
 }
 
@@ -76,6 +77,12 @@ func WriteJsonWithFormatHMTL(data interface{}, filepath string) {
 	jsonString := string(jsonData)
 	jsonString = strings.Replace(jsonString, "\\u003c", "<", -1)
 	jsonString = strings.Replace(jsonString, "\\u003e", ">", -1)
+
+	// jsonString = strings.Replace(jsonString, `\`, `\\`, -1)
+	// jsonString = strings.Replace(jsonString, `"`, `\"`, -1)
+	// jsonString = strings.Replace(jsonString, "\n", `\n`, -1)
+	// jsonString = strings.Replace(jsonString, "\r", `\r`, -1)
+	// jsonString = strings.Replace(jsonString, "\t", `\t`, -1)
 
 	err = os.WriteFile(filepath, []byte(jsonString), 0644)
 	errors.Println(err, "Ошибка сохранения файла JSON")
