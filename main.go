@@ -31,8 +31,16 @@ func main() {
 	err = json.NewDecoder(file2).Decode(&configTwo)
 	errors.Println(err, "Ошибка при декодировании JSON файла:")
 
+	//читаю конфиг сервера 3
+	file3, err := os.Open("data/input/3.json")
+	errors.Println(err, "Ошибка при открытии файла:")
+	defer file3.Close()
+	var configThree server.ServerConfig
+	err = json.NewDecoder(file3).Decode(&configThree)
+	errors.Println(err, "Ошибка при декодировании JSON файла:")
+
 	//создаю общий банлист
-	combinedBans := MergeBans(configOne.Bans, configTwo.Bans)
+	combinedBans := MergeBans(configOne.Bans, configTwo.Bans, configThree.Bans)
 
 	fmt.Println(color.BG_GREEN, "Объединенный список забаненных игроков:", color.BG_RESET)
 	fmt.Println(color.GREEN)
@@ -41,10 +49,12 @@ func main() {
 	//Заливаю общий бан лист в конфиги
 	configOne.Bans = combinedBans
 	configTwo.Bans = combinedBans
+	configThree.Bans = combinedBans
 
 	//Сохраняю конфиг в файл json файл
 	WriteJsonWithFormatHMTL(configOne, "data/output/1.json")
 	WriteJsonWithFormatHMTL(configTwo, "data/output/2.json")
+	WriteJsonWithFormatHMTL(configThree, "data/output/3.json")
 	WriteJsonWithFormatHMTL(combinedBans, "data/output/banlist.json")
 
 }
