@@ -10,12 +10,11 @@ import (
 	"github.com/LittleDrongo/fmn-lib/console/color"
 	"github.com/LittleDrongo/fmn-lib/errors"
 	"github.com/LittleDrongo/fmn-lib/utils/files"
-	// fmn-lib/utils/json/
 )
 
 func main() {
 
-	//читаю конфиг сервера 1
+	//Читаю конфиг сервера 1
 	file, err := os.Open("data/input/1.json")
 	errors.Println(err, "Ошибка при открытии файла:")
 	defer file.Close()
@@ -23,7 +22,7 @@ func main() {
 	err = json.NewDecoder(file).Decode(&configOne)
 	errors.Println(err, "Ошибка при декодировании JSON файла:")
 
-	//читаю конфиг сервера 2
+	//Читаю конфиг сервера 2
 	file2, err := os.Open("data/input/2.json")
 	errors.Println(err, "Ошибка при открытии файла:")
 	defer file2.Close()
@@ -31,7 +30,7 @@ func main() {
 	err = json.NewDecoder(file2).Decode(&configTwo)
 	errors.Println(err, "Ошибка при декодировании JSON файла:")
 
-	//читаю конфиг сервера 3
+	//Читаю конфиг сервера 3
 	file3, err := os.Open("data/input/3.json")
 	errors.Println(err, "Ошибка при открытии файла:")
 	defer file3.Close()
@@ -46,6 +45,7 @@ func main() {
 	fmt.Println(color.GREEN)
 	PrintJson(combinedBans)
 	fmt.Println(color.RESET)
+
 	//Заливаю общий бан лист в конфиги
 	configOne.Bans = combinedBans
 	configTwo.Bans = combinedBans
